@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CAMS 题库练习·试用版</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23B44524'/%3E%3Ctext x='32' y='46' font-size='38' text-anchor='middle' fill='%23FFF6EE' font-family='Songti SC, SimSun, serif' font-weight='700'%3E串%3C/text%3E%3C/svg%3E">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif; background: #f4f6f8; color: #222; min-height: 100vh; }
@@ -235,7 +236,8 @@ input[type="range"] { cursor: pointer; }
 <style>
 .ver-badge{display:inline-block;vertical-align:middle;font-size:13px;font-weight:800;color:#0a7d5a;background:#e6f6ef;border:1px solid #bfe6d4;border-radius:99px;padding:3px 12px;margin-left:10px;letter-spacing:.3px;}
 .lian-box{margin:16px 0;background:#f6f8fc;border:1px solid #e5ebf3;border-left:4px solid #2f5bd0;border-radius:12px;padding:18px 20px;}
-.lian-box .lian-h{font-size:15px;font-weight:800;color:#2f5bd0;margin-bottom:8px;letter-spacing:.3px;}
+.lian-box .lian-h{display:flex;align-items:center;gap:7px;font-size:15px;font-weight:800;color:#2f5bd0;margin-bottom:8px;letter-spacing:.3px;}
+.lian-box .lian-h svg{width:16px;height:16px;}
 .lian-box .lian-c{font-size:18px;line-height:1.85;color:#3a4657;}
 .lian-box .lian-c b{color:#172033;font-weight:700;}
 #lianSide{display:none;}
@@ -277,13 +279,473 @@ input[type="range"] { cursor: pointer; }
   #lianIntro{ padding:16px; } #lianIntro .li-t{ font-size:18px; } #lianIntro .li-d{ font-size:14px; }
   .ver-badge{ margin-left:0; margin-top:8px; }
 }
+</style>
+<style>
+/* ================= 主页 V2 · 视觉识别与微动效 ================= */
+body { --hv-blue:#3157d5; --hv-deep:#2447bc; --hv-ink:#131c33; --hv-line:#e6ebf1; }
+
+/* Hero：柔光渐变 + 极淡点阵 */
+.hero { position:relative; overflow:hidden; background:
+  radial-gradient(720px 340px at 10% -12%, rgba(49,87,213,.10), transparent 62%),
+  radial-gradient(560px 300px at 92% -22%, rgba(31,154,91,.08), transparent 60%),
+  linear-gradient(180deg,#ffffff 0%,#f6f9ff 100%); }
+.hero::before { content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:radial-gradient(rgba(19,28,51,.055) 1px, transparent 1.4px);
+  background-size:22px 22px;
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.75),transparent 76%);
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.75),transparent 76%); }
+.hero-inner { position:relative; }
+
+/* 品牌行 */
+.hero-top { display:flex; align-items:center; justify-content:space-between; gap:22px; }
+.hero-brand { display:flex; align-items:center; gap:15px; min-width:0; }
+.logo-mark { width:52px; height:52px; border-radius:15px; flex:none;
+  background:linear-gradient(135deg,#4a72e8,#2447bc);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 10px 20px rgba(36,71,188,.26), inset 0 1px 0 rgba(255,255,255,.28); }
+.logo-mark svg { width:29px; height:29px; display:block; }
+.hero-brand .home-title { margin-bottom:0; display:flex; align-items:center; flex-wrap:wrap; gap:4px; }
+.hero-brand .home-sub { margin-top:3px; }
+
+/* 今日进度环 */
+.hero-ring { flex:none; display:flex; align-items:center; gap:16px; background:#fff;
+  border:1px solid var(--hv-line); border-radius:16px; padding:11px 18px 11px 12px;
+  box-shadow:0 12px 28px rgba(31,54,93,.08); }
+.hr-svg { width:86px; height:86px; display:block; }
+.hr-svg .hr-track { stroke:#eef1f6; }
+.hr-svg .hr-fill { stroke:var(--hv-blue); transition:stroke-dashoffset .7s cubic-bezier(.22,.9,.34,1), stroke .3s; }
+.hr-svg .hr-fill.hr-done { stroke:#1d9a5b; }
+.hr-num { font-size:25px; font-weight:800; fill:var(--hv-ink); font-variant-numeric:tabular-nums; }
+.hr-cap { font-size:10.5px; fill:#8a94a6; font-weight:700; }
+.hr-side { display:flex; flex-direction:column; gap:7px; }
+.hr-row { display:flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700; color:#536176; }
+.hr-row b { color:var(--hv-ink); font-variant-numeric:tabular-nums; }
+.hr-row svg { width:15px; height:15px; flex:none; }
+.hr-row .ic-blue { color:var(--hv-blue); display:inline-flex; }
+.hr-row .ic-green { color:#1d9a5b; display:inline-flex; }
+
+/* 特性 chips */
+.hero-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+.hchip { display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700;
+  color:#7a8496; background:rgba(255,255,255,.72); border:1px solid #e8edf3; border-radius:99px; padding:5px 13px; }
+.hchip svg { width:13px; height:13px; color:#8fa3e8; }
+
+/* 主按钮：实体按压感 */
+.action-btn.primary { background:var(--hv-blue); border:0; border-radius:12px; padding:12px 24px;
+  box-shadow:0 3px 0 var(--hv-deep), 0 8px 16px rgba(36,71,188,.20); }
+.action-btn.primary:hover { background:#3a63e0; }
+.action-btn.primary:active { transform:translateY(3px); box-shadow:0 0 0 var(--hv-deep); }
+.action-btn, .back-btn, .small-btn, .mode-btn, .nav-btn { border-radius:10px; }
+.action-btn:active { transform:translateY(1px); }
+
+/* 统计 tile */
+.stats-grid { grid-template-columns:repeat(auto-fit, minmax(205px, 1fr)); gap:13px; }
+.stat-card { display:flex; flex-direction:row; align-items:center; gap:14px; padding:16px 18px; border-radius:16px; border-top:0; }
+.stat-ic { width:42px; height:42px; border-radius:13px; display:flex; align-items:center; justify-content:center; flex:none; }
+.stat-ic svg { width:21px; height:21px; }
+.stat-ic.red { background:#fff0f0; color:#c0392b; }
+.stat-ic.orange { background:#fff6e8; color:#b76012; }
+.stat-ic.green { background:#ecf8ef; color:#1d9a5b; }
+.stat-v2 .stat-label { margin-bottom:1px; }
+.stat-v2 .stat-value { line-height:1.15; }
+.stat-v2 .stat-note { margin-top:2px; }
+
+/* 章节卡：序号徽章 + 进度条 */
+.chapter-grid { gap:15px; }
+.chapter-card { position:relative; padding:18px 18px 15px; border-radius:16px; }
+.ch-head { display:flex; align-items:flex-start; gap:12px; }
+.ch-head > div:last-child { min-width:0; padding-right:22px; }
+.ch-num { width:38px; height:38px; border-radius:12px; flex:none; margin-top:2px;
+  background:linear-gradient(135deg,#eef3ff,#e2eaff); color:var(--hv-blue);
+  font-weight:800; font-size:14.5px; display:flex; align-items:center; justify-content:center;
+  font-variant-numeric:tabular-nums; }
+.ch-head h3 { margin:1px 0 4px; }
+.chapter-card .chev { position:absolute; right:15px; top:19px; width:16px; height:16px;
+  color:#b9c2d0; transition:transform .18s, color .18s; }
+.chapter-card:hover .chev { transform:translateX(3px); color:var(--hv-blue); }
+.ch-progress { height:7px; background:#edf1f6; border-radius:99px; margin-top:14px; overflow:hidden; }
+.ch-progress i { display:block; height:100%; width:0; border-radius:99px;
+  background:linear-gradient(90deg,#4a72e8,#3157d5); transition:width .7s cubic-bezier(.22,.9,.34,1); }
+.ch-progress i.full { background:linear-gradient(90deg,#2fb56b,#1d9a5b); }
+.ch-foot { display:flex; justify-content:space-between; align-items:center; margin-top:8px;
+  font-size:12px; color:#8a94a6; font-weight:700; }
+.ch-foot .pct { color:var(--hv-blue); font-variant-numeric:tabular-nums; }
+.ch-foot .pct.full { color:#1d9a5b; }
+.ch-done { display:inline-flex; align-items:center; gap:4px; color:#1d9a5b; }
+.ch-done svg { width:13px; height:13px; }
+
+/* 时间检测面板成卡 */
+#timeConsole { background:#fff; border:1px solid var(--hv-line); border-radius:16px; padding:16px 18px; }
+.time-title { display:flex; align-items:center; gap:7px; }
+.time-title svg { width:15px; height:15px; color:var(--hv-blue); flex:none; }
+.preset-row .small-btn { border-radius:99px; padding:7px 16px; }
+
+/* 串联 intro 一行式 */
+#lianIntro { display:flex; align-items:center; gap:14px; padding:13px 18px; }
+#lianIntro .li-t { margin:0; display:inline-flex; align-items:center; gap:7px; white-space:nowrap; }
+#lianIntro .li-t svg { width:15px; height:15px; color:#2f5bd0; flex:none; }
+#lianIntro .li-d { margin:0; font-size:13.5px; }
+
+/* 开关样式 */
+.setting-toggle input[type=checkbox] { appearance:none; -webkit-appearance:none; width:40px; height:22px;
+  border-radius:99px; background:#d9e0ea; position:relative; cursor:pointer; transition:background .18s; margin:0; flex:none; }
+.setting-toggle input[type=checkbox]::after { content:""; position:absolute; top:2px; left:2px; width:18px; height:18px;
+  border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.22); transition:left .18s cubic-bezier(.22,.9,.34,1); }
+.setting-toggle input[type=checkbox]:checked { background:#1d9a5b; }
+.setting-toggle input[type=checkbox]:checked::after { left:20px; }
+
+/* 页脚信任线 */
+.home-foot { width:100%; max-width:1050px; margin:26px auto 4px; padding:0 20px;
+  display:flex; flex-wrap:wrap; gap:6px 14px; align-items:center; justify-content:center;
+  color:#9aa3b1; font-size:12px; font-weight:600; }
+.home-foot svg { width:12px; height:12px; margin-right:5px; vertical-align:-2px; color:#aeb7c4; }
+.home-foot .dot { opacity:.45; }
+
+/* 入场动效 */
+@keyframes hvRise { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+.hero-top { animation:hvRise .45s cubic-bezier(.22,.9,.34,1) both; }
+.home-actions { animation:hvRise .45s cubic-bezier(.22,.9,.34,1) .06s both; }
+.hero-chips { animation:hvRise .45s cubic-bezier(.22,.9,.34,1) .12s both; }
+.dashboard > * { animation:hvRise .5s cubic-bezier(.22,.9,.34,1) both; }
+.dashboard > *:nth-child(1) { animation-delay:.10s }
+.dashboard > *:nth-child(2) { animation-delay:.16s }
+.dashboard > *:nth-child(3) { animation-delay:.22s }
+.dashboard > *:nth-child(4) { animation-delay:.28s }
+
+@media (max-width:900px){
+  .hero-top { flex-direction:column; align-items:stretch; }
+}
+@media (max-width:640px){
+  .logo-mark { width:44px; height:44px; border-radius:13px; }
+  .logo-mark svg { width:25px; height:25px; }
+  .hero-ring { padding:10px 14px 10px 10px; }
+  #lianIntro { flex-direction:column; align-items:flex-start; gap:5px; padding:13px 15px; }
+  .stat-card { padding:14px 15px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .hero-top, .home-actions, .hero-chips, .dashboard > * { animation:none !important; }
+  .hr-svg .hr-fill, .ch-progress i { transition:none !important; }
+}
+</style>
+<style id="practice-v3">
+/* ============ V3 答题体验精装修 ============ */
+/* —— 顶栏：从工具栏到驾驶舱 —— */
+.top-bar { padding: 12px 22px; gap: 16px; background: #fff; border-bottom: 1px solid #e9eef5; box-shadow: 0 1px 0 rgba(18,32,56,.03), 0 6px 20px rgba(18,32,56,.04); }
+.top-bar .back-btn { display: inline-flex; align-items: center; gap: 6px; border: 0; background: transparent; padding: 8px 10px; border-radius: 10px; font-size: 14px; font-weight: 800; color: #5b6575; }
+.top-bar .back-btn:hover { background: #f1f4f9; color: #2f4058; border-color: transparent; }
+.top-bar .back-btn svg { width: 16px; height: 16px; }
+.progress-wrap { flex: 1; min-width: 90px; }
+.progress-text { font-size: 12.5px; font-weight: 800; color: #8a94a6; margin-bottom: 6px; letter-spacing: .4px; font-variant-numeric: tabular-nums; }
+.progress-bar { height: 12px; background: #edf1f7; border-radius: 99px; box-shadow: inset 0 1px 2px rgba(18,32,56,.06); }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #4a72e8, #3157d5); border-radius: 99px; transition: width .5s cubic-bezier(.22,1,.36,1); }
+.tb-stats { display: flex; align-items: center; gap: 8px; }
+.tb-stat { display: inline-flex; align-items: center; gap: 6px; border-radius: 12px; padding: 8px 12px; font-size: 14.5px; font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; transition: background .15s; }
+.tb-stat svg { width: 16px; height: 16px; flex: none; }
+.tb-stat.ok   { background: #ecf8ef; color: #237a3a; }
+.tb-stat.bad  { background: #fdf0ef; color: #c0392b; cursor: pointer; }
+.tb-stat.bad:hover { background: #fbe4e2; }
+.tb-stat.fire { background: #fff6e8; color: #b76012; }
+.tb-stat.fire svg { color: #ef8e1e; }
+.tb-stat.fire.hot svg { animation: vFlame .9s ease-in-out infinite; transform-origin: 50% 80%; }
+.tb-stat.time { background: #f4f6fa; color: #5b6575; display: none; }
+.tb-stat .tb-pop { display: inline-block; }
+.tb-stat .tb-pop.num-pop { animation: vNumPop .35s cubic-bezier(.3,1.6,.5,1); }
+@keyframes vFlame { 0%,100% { transform: scale(1) rotate(0); } 30% { transform: scale(1.12) rotate(-4deg); } 60% { transform: scale(1.06) rotate(3deg); } }
+@keyframes vNumPop { 0% { transform: scale(1); } 45% { transform: scale(1.35); } 100% { transform: scale(1); } }
+.tb-actions { display: flex; align-items: center; gap: 8px; }
+.tb-ghost { border: 1px solid transparent; background: transparent; color: #5b6575; border-radius: 10px; padding: 9px 13px; font-size: 14px; font-weight: 800; cursor: pointer; transition: background .15s, color .15s; }
+.tb-ghost:hover { background: #f1f4f9; color: #2f4058; }
+.tb-primary { border: 0; background: #3157d5; color: #fff; border-radius: 12px; padding: 10px 18px; font-size: 14px; font-weight: 800; cursor: pointer; box-shadow: 0 3px 0 #2447bc; transition: transform .1s, box-shadow .1s, background .15s; }
+.tb-primary:hover { background: #3d63e0; }
+.tb-primary:active { transform: translateY(3px); box-shadow: 0 0 0 #2447bc; }
+
+/* —— 选项：实体按键 —— */
+.options-list { gap: 12px; }
+.option-item { border: 2px solid #e3e9f2; border-radius: 14px; padding: 16px 20px; background: #fff;
+  box-shadow: 0 4px 0 #dfe6f0; transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+  user-select: none; }
+.option-item:hover:not(.disabled) { transform: translateY(-2px); box-shadow: 0 6px 0 #dfe6f0; border-color: #c8d4ee; background: #fbfcff; }
+.option-item:active:not(.disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #dfe6f0; }
+.option-item.selected { border-color: #3157d5; background: #eef3ff; box-shadow: 0 4px 0 #2a49b8; }
+.option-item.selected .opt-label { background: #3157d5; color: #fff; border-color: #3157d5; }
+.option-item.correct { border-color: #2fa566; background: #eafaf1; box-shadow: 0 4px 0 #238a54; animation: vBounce .5s cubic-bezier(.3,1.4,.5,1); }
+.option-item.correct .opt-label, .option-item.missed .opt-label { background: #2fa566; color: #fff; border-color: #2fa566; }
+.option-item.wrong { border-color: #e35d5d; background: #fff2f2; box-shadow: 0 4px 0 #c74444; animation: vShake .45s ease; }
+.option-item.wrong .opt-label { background: #e35d5d; color: #fff; border-color: #e35d5d; }
+.option-item.missed { border-color: #7fcba0; background: #f4fbf7; box-shadow: 0 4px 0 #b9decb; opacity: .92; }
+.opt-label { min-width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border: 2px solid #dfe6f0; border-radius: 9px; font-size: 15px; font-weight: 800; color: #5b6575; background: #f6f8fb; transition: all .12s; padding: 0; margin-top: 1px; }
+@keyframes vBounce { 0% { transform: scale(.97); } 45% { transform: scale(1.015); } 70% { transform: scale(.998); } 100% { transform: scale(1); } }
+@keyframes vShake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-7px); } 45% { transform: translateX(6px); } 70% { transform: translateX(-4px); } 88% { transform: translateX(2px); } }
+
+/* —— 忘答案：降级为低调文字链 —— */
+.pre-answer-actions { gap: 12px; }
+.forgot-line { display: flex; justify-content: center; margin-top: 2px; }
+.forgot-link { border: 0; background: transparent; color: #9aa4b2; font-size: 13.5px; font-weight: 700; cursor: pointer; padding: 6px 14px; border-radius: 8px; transition: color .15s, background .15s; }
+.forgot-link:hover { color: #b42318; background: #fdf3f2; }
+.confirm-btn { border-radius: 14px; padding: 15px; font-size: 16px; box-shadow: 0 4px 0 #2447bc; transition: transform .1s, box-shadow .1s; }
+.confirm-btn:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 0 0 #2447bc; }
+.confirm-btn:disabled { background: #c3cbd8; box-shadow: 0 4px 0 #aab3c2; }
+
+/* —— 结果区：信息分层 —— */
+.result-box { margin-top: 22px; border-top: 1px dashed #e3e9f2; padding-top: 18px; animation: vRise .35s cubic-bezier(.22,1,.36,1); }
+@keyframes vRise { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+.result-label { display: inline-flex; align-items: center; gap: 7px; font-size: 15px; padding: 5px 0; }
+.result-label svg { width: 18px; height: 18px; }
+.rb-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 14px; }
+.rb-chip { display: inline-flex; align-items: center; gap: 6px; background: #f4f6fa; border: 1px solid #e8edf3; color: #53617a; border-radius: 99px; padding: 5px 13px; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.rb-chip strong { color: #172033; font-weight: 800; }
+.rb-chip.chip-ok strong { color: #237a3a; }
+.rb-chip.chip-bad strong { color: #c0392b; }
+.explanation { background: #f7f9ff; border-left: 0; border: 1px solid #e5ebf8; border-radius: 12px; padding: 18px 20px; }
+.expl-title { display: flex; align-items: center; gap: 7px; font-weight: 800; color: #3157d5; margin-bottom: 8px; font-size: 14.5px; letter-spacing: .3px; }
+.expl-title svg { width: 16px; height: 16px; }
+.rb-history { margin-top: 12px; }
+.rb-history summary { cursor: pointer; color: #9aa4b2; font-size: 12.5px; font-weight: 700; list-style: none; display: inline-flex; align-items: center; gap: 5px; user-select: none; }
+.rb-history summary::-webkit-details-marker { display: none; }
+.rb-history summary::before { content: ''; width: 14px; height: 14px; background: currentColor; opacity: .75; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E") center/contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E") center/contain no-repeat; transition: transform .15s; }
+.rb-history[open] summary::before { transform: rotate(90deg); }
+.rb-history summary:hover { color: #5b6575; }
+.rb-history .rb-hist-body { margin-top: 8px; padding: 10px 14px; background: #fafbfd; border: 1px solid #eef1f6; border-radius: 10px; color: #7a8496; font-size: 13px; line-height: 1.9; font-variant-numeric: tabular-nums; }
+.tap-next-hint { color: #b3bcc9; font-size: 13px; }
+.mastery-row { margin-top: 10px; }
+.mastery-row .small-btn { border-radius: 99px; font-size: 12.5px; padding: 7px 14px; color: #5b6575; border-color: #e3e9f2; background: #fff; }
+.mastery-row .small-btn:hover { color: #3157d5; border-color: #c8d4ee; background: #f7f9ff; }
+
+/* —— 判分横幅：给对错一个舞台 —— */
+#judgeBar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; transform: translateY(112%); transition: transform .4s cubic-bezier(.22,1.15,.32,1); pointer-events: none; box-shadow: 0 -8px 30px rgba(18,32,56,.16); }
+#judgeBar.show { transform: translateY(0); pointer-events: auto; }
+#judgeBar .jb-strip { height: 6px; }
+.jb-inner { display: flex; align-items: center; gap: 18px; width: 100%; padding: 18px 30px 22px; }
+#judgeBar.jb-correct .jb-strip { background: linear-gradient(90deg, #34b06b, #2fa566); }
+#judgeBar.jb-correct .jb-inner { background: linear-gradient(180deg, #2fa566, #279558); }
+#judgeBar.jb-wrong .jb-strip { background: linear-gradient(90deg, #e86a6a, #e35d5d); }
+#judgeBar.jb-wrong .jb-inner { background: linear-gradient(180deg, #e35d5d, #d54f4f); }
+#judgeBar.jb-skip .jb-strip { background: linear-gradient(90deg, #8a94a6, #7a8496); }
+#judgeBar.jb-skip .jb-inner { background: linear-gradient(180deg, #6d7787, #5f6877); }
+.jb-icon { flex: none; width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,.16); display: flex; align-items: center; justify-content: center; animation: vIconIn .45s cubic-bezier(.3,1.6,.5,1) both; }
+.jb-icon svg { width: 26px; height: 26px; }
+@keyframes vIconIn { 0% { transform: scale(.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.jb-text { flex: 1; min-width: 0; }
+.jb-title { color: #fff; font-size: 21px; font-weight: 800; letter-spacing: .5px; }
+.jb-sub { color: rgba(255,255,255,.82); font-size: 13.5px; font-weight: 700; margin-top: 3px; font-variant-numeric: tabular-nums; }
+.jb-btn { flex: none; border: 0; background: #fff; color: #238a54; border-radius: 14px; padding: 13px 40px; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,.18); transition: transform .1s, box-shadow .1s; letter-spacing: 2px; }
+.jb-btn:active { transform: translateY(4px); box-shadow: 0 0 0 rgba(0,0,0,.18); }
+#judgeBar.jb-wrong .jb-btn { color: #c74444; }
+#judgeBar.jb-skip .jb-btn { color: #454e5c; }
+#practice.has-jb .q-container { padding-bottom: 150px; }
+
+/* —— 侧栏：数字有仪表感 —— */
+#statSide, #lianSide { border: 0; box-shadow: 0 6px 24px rgba(31,54,93,.07); }
+#statSide .side-h, #lianSide .side-h { display: flex; align-items: center; gap: 7px; color: #8a94a6; font-size: 13px; font-weight: 800; letter-spacing: .8px; }
+#statSide .side-h svg, #lianSide .side-h svg { width: 15px; height: 15px; color: #3157d5; }
+.stat-big { font-variant-numeric: tabular-nums; }
+.stat-big.acc-bad { color: #d05a52; }
+.stat-row { display: flex; align-items: center; gap: 8px; }
+.stat-row svg { width: 15px; height: 15px; color: #b76012; flex: none; }
+.stat-row svg.rr { color: #3157d5; }
+.stat-row strong { margin-left: auto; font-variant-numeric: tabular-nums; font-size: 16px; }
+#lianSide .side-c { background: linear-gradient(180deg, #fbfcff, #f7f9ff); border: 1px solid #e9eef8; border-radius: 12px; padding: 16px 18px; font-size: 16.5px; }
+#lianSide .side-ph { display: flex; gap: 8px; align-items: flex-start; background: #fafbfd; border: 1px dashed #e3e9f2; border-radius: 12px; padding: 14px 16px; }
+
+/* —— 完成模态：给成就感一个仪式 —— */
+#finishOverlay .modal { border-radius: 20px; padding: 36px 32px 28px; max-width: 480px; box-shadow: 0 24px 80px rgba(18,32,56,.3); animation: vModalIn .4s cubic-bezier(.22,1.2,.32,1); overflow: hidden; position: relative; }
+@keyframes vModalIn { 0% { opacity: 0; transform: translateY(26px) scale(.97); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+.fn-hero { text-align: center; margin-bottom: 6px; }
+.fn-medal { width: 84px; height: 84px; margin: 0 auto 12px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 35% 30%, #fff3d6, #ffe4a8); box-shadow: 0 6px 0 #eccf8e, 0 14px 30px rgba(214,158,58,.35); animation: vMedal .6s cubic-bezier(.3,1.5,.5,1) both .1s; }
+.fn-medal svg { width: 44px; height: 44px; color: #c58f1c; }
+@keyframes vMedal { 0% { transform: scale(.3) rotate(-12deg); opacity: 0; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+.fn-medal.fn-silver { background: radial-gradient(circle at 35% 30%, #f4f7fb, #dbe3ec); box-shadow: 0 6px 0 #b9c4d2, 0 14px 30px rgba(120,140,165,.3); }
+.fn-medal.fn-silver svg { color: #6d7d90; }
+.fn-medal.fn-bronze { background: radial-gradient(circle at 35% 30%, #f8e8dc, #edd2ba); box-shadow: 0 6px 0 #d3b294, 0 14px 30px rgba(190,130,70,.3); }
+.fn-medal.fn-bronze svg { color: #a5692d; }
+.fn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0 16px; }
+.fn-cell { background: #f7f9fc; border: 1px solid #edf1f6; border-radius: 14px; padding: 14px 6px 12px; text-align: center; }
+.fn-num { font-size: 26px; font-weight: 800; color: #172033; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.fn-num small { font-size: 13px; font-weight: 800; color: #8a94a6; margin-left: 1px; }
+.fn-num.good { color: #237a3a; }
+.fn-cap { color: #8a94a6; font-size: 12px; font-weight: 700; margin-top: 5px; letter-spacing: .5px; }
+.fn-note { background: #f0f4ff; border: 1px solid #dfe7fb; color: #44507a; border-radius: 12px; padding: 12px 16px; font-size: 13.5px; line-height: 1.7; text-align: left; margin-bottom: 18px; }
+
+/* —— 移动端 —— */
+@media (max-width: 900px) {
+  .tb-ghost { display: none; }
+}
+@media (max-width: 760px) {
+  .top-bar { padding: 10px 12px; gap: 10px; }
+  .top-bar .back-btn span { display: none; }
+  .tb-stats { gap: 6px; }
+  .tb-stat { padding: 7px 9px; font-size: 13px; border-radius: 10px; }
+  .tb-primary { padding: 9px 14px; font-size: 13px; }
+  .progress-text { font-size: 11.5px; margin-bottom: 4px; }
+  .progress-bar { height: 10px; }
+  .option-item { padding: 14px 14px; border-radius: 12px; box-shadow: 0 3px 0 #dfe6f0; }
+  .opt-label { min-width: 27px; height: 27px; font-size: 13.5px; border-radius: 8px; }
+  .jb-inner { gap: 12px; padding: 14px 16px 18px; }  .jb-title { font-size: 18px; }
+  .jb-btn { padding: 12px 26px; font-size: 15px; }
+  .jb-icon { width: 40px; height: 40px; }
+  .jb-icon svg { width: 22px; height: 22px; }
+  #practice.has-jb .q-container { padding-bottom: 130px; }
+  .fn-grid { gap: 8px; }
+  .fn-num { font-size: 21px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #judgeBar, .result-box, .jb-icon, .fn-medal, #finishOverlay .modal { transition: none; animation: none; }
+  .option-item, .tb-stat.fire.hot svg { animation: none; }
+}
+</style>
+<style id="home-v4">
+/* ============================================================
+   V4 · 品牌识别层「纸墨印」
+   墨蓝 = 专业沉着 · 朱砂 = 印章/批注 · 米纸 = 书卷底色
+   宋体 display = 出版物的声音 · 串联线 = 产品自己的签名图形
+   ============================================================ */
+body {
+  --fd: "Noto Serif SC","Source Han Serif SC","Songti SC","STSong","STZhongsong","SimSun",serif;
+  --paper:#F6F3EB; --paper-line:#E7E1D2; --paper-deep:#EDE8D8;
+  --ink:#1C2536; --ink-blue:#2A3F6D; --ink-blue-deep:#1D2E52;
+  --seal:#BC4B2E; --seal-deep:#9C3A20;
+}
+body { background:var(--paper); }
+
+/* —— 全局色系迁移：通用蓝 → 墨蓝（含答题页，统一身份） —— */
+body { --hv-blue:var(--ink-blue); --hv-deep:var(--ink-blue-deep); }
+.mode-status, .stat-big, #statSide .side-h, .expl-title { color:var(--ink-blue); }
+.count, .acc-badge, .tag-single { background:#EDF1F8; color:var(--ink-blue); }
+.jump-btn.current, .nav-btn.primary, .modal-btn.pri, .confirm-btn { background:var(--ink-blue); border-color:var(--ink-blue); }
+.jump-btn.current, .nav-btn.primary { box-shadow:0 3px 0 var(--ink-blue-deep); }
+.nav-btn.primary:active, .jump-btn.current:active { transform:translateY(2px); box-shadow:0 0 0 var(--ink-blue-deep); }
+.confirm-btn { box-shadow:0 4px 0 var(--ink-blue-deep); }
+input[type="range"] { accent-color:var(--ink-blue); }
+.mode-btn, .action-btn, .back-btn, .small-btn { border-color:#DCD5C4; color:#39445C; }
+.mode-btn:hover, .action-btn:hover, .back-btn:hover, .small-btn:hover { border-color:var(--ink-blue); color:var(--ink-blue); }
+.mode-btn.active { background:var(--ink-blue); border-color:var(--ink-blue); }
+.mode-btn.active:hover { background:#33497A; }
+.action-btn.primary { background:linear-gradient(160deg,#35508B,#2A3F6D); }
+.action-btn.primary:hover { background:#35508B; }
+/* 答题页同步迁移 */
+.progress-fill { background:linear-gradient(90deg,#35508B,#2A3F6D); }
+.tb-primary { background:var(--ink-blue); box-shadow:0 3px 0 var(--ink-blue-deep); }
+.tb-primary:hover { background:#33497A; }
+.option-item.selected { border-color:var(--ink-blue); background:#EDF1F8; box-shadow:0 4px 0 #22355C; }
+.option-item.selected .opt-label { background:var(--ink-blue); border-color:var(--ink-blue); }
+.explanation { background:#F9F8F4; border:1px solid #E8E4D8; }
+.mastery-row .small-btn:hover { color:var(--ink-blue); border-color:#C6CFE2; background:#F5F7FB; }
+.stat-row svg.rr, #statSide .side-h svg, #lianSide .side-h svg { color:var(--ink-blue); }
+.small-btn.active { background:var(--ink-blue); border-color:var(--ink-blue); }
+
+/* —— Hero：宣纸底 + 墨点纹理 —— */
+.hero { background:
+  radial-gradient(720px 340px at 8% -14%, rgba(42,63,109,.08), transparent 62%),
+  radial-gradient(600px 300px at 95% -20%, rgba(188,75,46,.07), transparent 60%),
+  linear-gradient(180deg,#FCFAF4 0%,#F4F0E3 100%);
+  border-bottom:1px solid var(--paper-line); }
+.hero::before { background-image:radial-gradient(rgba(28,37,54,.06) 1px, transparent 1.4px); }
+
+/* —— 印章 Logo：「串」字朱砂印 —— */
+.logo-mark { border-radius:14px; background:linear-gradient(160deg,#C8532F,#A0371F);
+  box-shadow:inset 0 0 0 2px rgba(255,246,238,.25), 0 2px 0 #8C3019, 0 12px 22px rgba(160,55,31,.28); }
+.logo-mark svg { display:none; }
+.seal-glyph { font-family:var(--fd); font-weight:700; font-size:29px; color:#FFF6EE; line-height:1;
+  text-shadow:0 1px 0 rgba(0,0,0,.18); user-select:none; }
+
+/* —— 标题：宋体的声音 + 「串联版」小印章 —— */
+.ht-main { font-family:var(--fd); font-weight:700; letter-spacing:2px; color:var(--ink); }
+.ht-seal { display:inline-block; font-family:var(--fd); font-weight:700; font-size:15px; line-height:1;
+  color:#FFF6EE; background:linear-gradient(160deg,#C8532F,#A0371F); padding:5px 9px 6px;
+  border-radius:7px; transform:rotate(-4deg) translateY(-2px); letter-spacing:3px;
+  box-shadow:0 2px 0 #8C3019, 0 6px 14px rgba(160,55,31,.26); user-select:none; }
+.ver-badge { color:#8A8474; background:transparent; border:0; padding:3px 0 3px 4px; font-weight:600; }
+.home-sub { letter-spacing:.5px; color:#857F6E; }
+
+/* —— 签名图形：串联线（节点由 JS 沿路径布点） —— */
+.thread-deco { position:absolute; right:-14px; top:-4px; width:min(45%,530px); height:auto;
+  z-index:0; pointer-events:none; }
+.hero-top { position:relative; z-index:1; }
+.td-path { stroke:var(--ink-blue); stroke-width:2; opacity:.16; stroke-linecap:round;
+  stroke-dasharray:1; stroke-dashoffset:1; animation:tdDraw 1.4s cubic-bezier(.4,0,.2,1) .15s forwards; }
+@keyframes tdDraw { to { stroke-dashoffset:0; } }
+.td-node { opacity:0; transform-box:fill-box; transform-origin:center;
+  animation:tdPop .5s cubic-bezier(.3,1.5,.5,1) forwards; }
+@keyframes tdPop { from { opacity:0; transform:scale(0); } to { opacity:1; transform:scale(1); } }
+.td-ink  { fill:rgba(42,63,109,.30); }
+.td-seal { fill:var(--seal); }
+.td-halo { fill:rgba(188,75,46,.14); }
+.td-live { animation:tdPop .5s cubic-bezier(.3,1.5,.5,1) forwards, tdBreathe 3.6s ease-in-out 2.2s infinite; }
+@keyframes tdBreathe { 0%,100% { transform:scale(1); opacity:1; } 50% { transform:scale(1.35); opacity:.68; } }
+
+/* —— 今日环 —— */
+.hr-svg .hr-track { stroke:#E9E3D2; }
+.hr-num { font-family:var(--fd); font-weight:700; }
+
+/* —— 区块标题：线结装饰 + 宋体 —— */
+.section-title { font-family:var(--fd); font-weight:700; letter-spacing:1.5px;
+  display:flex; align-items:center; gap:10px; }
+.section-title::before { content:""; flex:none; width:30px; height:12px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 12'%3E%3Cline x1='0' y1='6' x2='10' y2='6' stroke='%23B9B29E' stroke-width='2'/%3E%3Ccircle cx='15' cy='6' r='4' fill='%23BC4B2E'/%3E%3Cline x1='20' y1='6' x2='30' y2='6' stroke='%23B9B29E' stroke-width='2'/%3E%3C/svg%3E") center/contain no-repeat; }
+
+/* —— 卡片：暖色发丝线 —— */
+.chapter-card, .stat-card, .review-panel, #timeConsole { border-color:var(--paper-line); }
+.chapter-card:hover { border-color:#7C89AB; box-shadow:0 10px 26px rgba(74,60,28,.10); }
+
+/* —— 统计：宋体大数字 —— */
+.stat-value { font-family:var(--fd); font-weight:700; letter-spacing:.5px; }
+.stat-label { letter-spacing:.6px; }
+
+/* —— 章节卡：序号成印 + 进度成线 —— */
+.ch-num { background:linear-gradient(160deg,#FCFAF4,#F1ECDD); color:var(--seal);
+  border:1px solid var(--paper-line); font-family:var(--fd); font-weight:700; font-size:16px; border-radius:10px; }
+.ch-progress { position:relative; height:12px; background:transparent; overflow:visible; margin-top:16px; }
+.ch-progress::before { content:""; position:absolute; left:0; right:0; top:50%;
+  border-top:2px dotted #D9D2BE; transform:translateY(-50%); }
+.ch-progress i { position:absolute; left:0; top:50%; height:3px; transform:translateY(-50%);
+  border-radius:99px; background:linear-gradient(90deg,#35508B,#2A3F6D); }
+.ch-progress i::after { content:""; position:absolute; right:-6px; top:50%; transform:translateY(-50%);
+  width:11px; height:11px; border-radius:50%; background:var(--seal);
+  box-shadow:0 0 0 3px rgba(188,75,46,.16); }
+.ch-progress i.full { background:#2FA566; }
+.ch-progress i.full::after { background:#2FA566; box-shadow:0 0 0 3px rgba(47,165,102,.16); }
+.ch-foot .pct { color:var(--ink-blue); font-family:var(--fd); font-weight:700; }
+
+/* —— 特性 chips：串联考点一枚朱砂 —— */
+.hchip { background:rgba(255,255,255,.66); border-color:var(--paper-line); color:#7D8494; }
+.hchip svg { color:#A9A18C; }
+.hchip:first-child { color:var(--seal); border-color:#EBD5C9; background:rgba(255,249,244,.8); }
+.hchip:first-child svg { color:var(--seal); }
+
+/* —— 串联介绍：产品的灵魂，给足存在感 —— */
+#lianIntro { background:linear-gradient(90deg,#FBF7EF,#F8F1E6); border:1px solid #EADFCC; }
+#lianIntro .li-t { font-family:var(--fd); letter-spacing:1px; }
+#lianIntro .li-t svg { color:var(--seal); }
+
+/* —— 页脚：线上一颗印 —— */
+.home-foot { position:relative; border-top:1px solid var(--paper-line); padding-top:16px; margin-top:30px; }
+.home-foot::before { content:""; position:absolute; top:-5px; left:50%; transform:translateX(-50%);
+  width:9px; height:9px; border-radius:50%; background:var(--seal); box-shadow:0 0 0 3px var(--paper); }
+.home-foot { color:#98937F; }
+
+/* —— 响应式 —— */
+@media (max-width:900px){ .thread-deco { width:58%; right:-30px; opacity:.6; } }
+@media (max-width:640px){ .thread-deco { display:none; } .ht-seal { transform:rotate(-4deg) translateY(-1px); font-size:13.5px; } }
+@media (prefers-reduced-motion: reduce){
+  .td-path { animation:none; stroke-dashoffset:0; }
+  .td-node, .td-live { animation:none; opacity:1; transform:none; }
+}
 </style></head>
 <body>
 <div id="home" class="page active">
   <div class="hero">
     <div class="hero-inner">
-      <div class="home-title">CAMS 题库练习·串联版 <span class="ver-badge">串联考点·按题号匹配</span></div>
-      <div class="home-sub" id="homeSub"></div>
+      <svg class="thread-deco" viewBox="0 0 560 150" fill="none" aria-hidden="true" preserveAspectRatio="xMidYMid meet"><path class="td-path" pathLength="1" d="M8 112 C 60 52, 110 48, 158 78 S 250 118, 300 84 S 396 26, 448 52 S 530 84, 552 64"/><g class="td-nodes"></g></svg>
+      <div class="hero-top">
+        <div class="hero-brand">
+          <div class="logo-mark seal-logo" aria-hidden="true"><span class="seal-glyph">串</span></div>
+          <div class="hero-brand-text">
+            <div class="home-title"><span class="ht-main">CAMS 题库练习</span><span class="ht-seal">串联版</span> <span class="ver-badge">串联考点·按题号匹配</span></div>
+            <div class="home-sub" id="homeSub"></div>
+          </div>
+        </div>
+        <div class="hero-ring" id="heroRing"></div>
+      </div>
       <div class="home-actions">
         <span class="mode-label">练习顺序</span>
         <span class="mode-switch">
@@ -296,9 +758,14 @@ input[type="range"] { cursor: pointer; }
         <button class="action-btn" onclick="startPractice('exam')">模拟考试</button>
         <span class="font-tools">
           <span class="mode-label">字号</span>
-          <input id="fontSlider" type="range" min="14" max="30" step="1" value="21" oninput="setFontScale(this.value)" style="width:130px;accent-color:#3157d5">
+          <input id="fontSlider" type="range" min="14" max="30" step="1" value="21" oninput="setFontScale(this.value)" style="width:130px;accent-color:#2A3F6D">
           <span class="mode-label" id="fontScaleVal">21px</span>
         </span>
+      </div>
+      <div class="hero-chips" aria-hidden="true">
+        <span class="hchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>串联考点</span>
+        <span class="hchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.5V12l2.8 1.8"/></svg>时间检测</span>
+        <span class="hchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.6" width="15" height="9.4" rx="2.4"/><path d="M8.2 10.6V7.4a3.8 3.8 0 0 1 7.6 0v3.2"/></svg>本机保存</span>
       </div>
     </div>
   </div>
@@ -309,26 +776,46 @@ input[type="range"] { cursor: pointer; }
     <div class="section-title">章节练习</div>
     <div class="chapter-grid" id="chapterGrid"></div>
   </div>
+  <div class="home-foot">
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.6" width="15" height="9.4" rx="2.4"/><path d="M8.2 10.6V7.4a3.8 3.8 0 0 1 7.6 0v3.2"/></svg>进度仅保存在本机浏览器</span>
+    <span class="dot">·</span>
+    <span id="footTotal"></span>
+  </div>
 </div>
 
 <div id="practice" class="page">
   <div class="top-bar">
-    <button class="back-btn" onclick="goHome()">返回</button>
+    <button class="back-btn" onclick="goHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg><span>返回</span></button>
     <div class="progress-wrap">
       <div class="progress-text" id="progressText"></div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     </div>
-    <div class="timer-badge" id="timerBadge">00:00</div>
-    <div class="score-badge" id="scoreBadge">正确：0</div>
-    <div class="wrong-badge" id="wrongBadge" onclick="goWrongBook()">错题：0</div>
-    <div class="streak-badge" id="streakBadge">🔥0</div>
-    <button class="back-btn" onclick="goQuestionNavigator()">题目导航</button>
-    <button class="back-btn" onclick="goSessionReview()">本次回顾</button>
-    <button class="back-btn" onclick="submitSession()">提交本次练习</button>
+    <div class="tb-stats">
+      <div class="tb-stat time" id="timerBadge">00:00</div>
+      <div class="tb-stat ok" id="scoreBadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span class="tb-pop" id="scoreNum">0</span></div>
+      <div class="tb-stat bad" id="wrongBadge" onclick="goWrongBook()" title="错题本"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg><span class="tb-pop" id="wrongNum">0</span></div>
+      <div class="tb-stat fire" id="streakBadge" title="连击"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c.9 3.4-.7 5-2.1 6.5C8.4 10.2 7 11.9 7 14.5A5.4 5.4 0 0 0 12.4 20c3 0 5.6-2.4 5.6-5.5 0-1.7-.7-3.1-1.5-4.3-.3 1-.9 1.9-1.8 2.4.3-2.8-.8-6.6-2.7-8.4z"/></svg><span class="tb-pop" id="streakNum">0</span></div>
+    </div>
+    <div class="tb-actions">
+      <button class="tb-ghost" onclick="goQuestionNavigator()">导航</button>
+      <button class="tb-ghost" onclick="goSessionReview()">回顾</button>
+      <button class="tb-primary" onclick="submitSession()">提交练习</button>
+    </div>
   </div>
   <div class="inline-dropdown" id="questionNavigatorDropdown"></div>
   <div class="q-container">
     <div class="q-card" id="qCard"></div>
+  </div>
+  <div id="judgeBar" aria-hidden="true">
+    <div class="jb-strip"></div>
+    <div class="jb-inner">
+      <div class="jb-icon" id="jbIcon"></div>
+      <div class="jb-text">
+        <div class="jb-title" id="jbTitle"></div>
+        <div class="jb-sub" id="jbSub"></div>
+      </div>
+      <button class="jb-btn" id="jbBtn" onclick="jbNext()">继续</button>
+    </div>
   </div>
 </div>
 
@@ -674,7 +1161,8 @@ function markForgot(qid, refresh=true) {
     pending.forceForgot = true;
     pending.manualForgot = true;
     savePracticeProgress();
-    document.getElementById('scoreBadge').textContent = `正确：${correctCount}`;
+    tbSetNum('scoreNum', correctCount);
+    jbShow('skip', '已标记记不住', '本题提交后会进入不熟悉复习', '继续');
     const notice = document.getElementById('masteryNotice');
     if (notice) notice.textContent = '已在本轮标记为“记不住了”，提交后会进入不熟悉复习。';
     return;
@@ -901,7 +1389,7 @@ function renderTimeSettings() {
   el.innerHTML = `
     <div class="time-head">
       <div>
-        <div class="time-title">时间检测</div>
+        <div class="time-title">${IC.clock}<span>时间检测</span></div>
         <div class="meta">慢答只进不熟悉复习，不算错题。预设一键切换，细节可展开微调。</div>
       </div>
       <label class="setting-toggle">
@@ -910,9 +1398,10 @@ function renderTimeSettings() {
       </label>
     </div>
     <div class="preset-row">
-      <button class="small-btn" onclick="vTPreset('relaxed')">宽松</button>
-      <button class="small-btn" onclick="vTPreset('standard')">标准</button>
-      <button class="small-btn" onclick="vTPreset('strict')">严格</button>
+      ${(() => { const eq = k => s.enabled && ['cap','singleFast','singleHesitant','singleSlow','multiFast','multiHesitant','multiSlow'].every(f => Number(s[f]) === Number(VTPRESETS[k][f])); return `
+      <button class="small-btn${eq('relaxed') ? ' active' : ''}" onclick="vTPreset('relaxed')">宽松</button>
+      <button class="small-btn${eq('standard') ? ' active' : ''}" onclick="vTPreset('standard')">标准</button>
+      <button class="small-btn${eq('strict') ? ' active' : ''}" onclick="vTPreset('strict')">严格</button>`; })()}
     </div>
     <details class="adv-details"><summary>高级微调</summary>
     <div class="range-grid">
@@ -980,18 +1469,75 @@ function initHome() {
   const wrongAttempts = Object.values(stats).reduce((s, x) => s + (x.wrong || 0), 0);
   const correctAttempts = Object.values(stats).reduce((s, x) => s + (x.correct || 0), 0);
   const accuracy = correctAttempts + wrongAttempts ? Math.round(correctAttempts / (correctAttempts + wrongAttempts) * 100) : 0;
-  document.getElementById('homeSub').textContent = `共 ${total} 道题 · 单选 ${total - multiCount} 道 · 多选 ${multiCount} 道`;
+  const activeChapters = CHAPTERS.filter(c => ALL_QUESTIONS.some(q => q.chapter_id === c.id)).length;
+  document.getElementById('homeSub').textContent = `共 ${total} 道题 · ${activeChapters} 个章节`;
+  const foot = document.getElementById('footTotal');
+  if (foot) foot.textContent = `试用版 · 共 ${total} 题`;
   const allBtn = document.getElementById('allPracticeBtn');
-  if (allBtn) allBtn.textContent = hasSavedProgress('all') ? '继续练习全部' : '练习全部';
+  if (allBtn) allBtn.textContent = hasSavedProgress('all') ? '继续练习' : '开始练习';
+  renderHeroRing({ total, attempted, accuracy });
   renderTimeSettings();
   document.getElementById('statsGrid').innerHTML = `
-    <div class="stat-card"><div class="stat-label">已练题目</div><div class="stat-value">${attempted}</div><div class="stat-note">覆盖率 ${Math.round(attempted / total * 100)}%</div></div>
-    <div class="stat-card"><div class="stat-label">当前错题</div><div class="stat-value">${wrongIds.length}</div><div class="stat-note">建议每天先清这一组</div></div>
-    <div class="stat-card"><div class="stat-label">累计错误</div><div class="stat-value">${wrongAttempts}</div><div class="stat-note">包含重复错题次数</div></div>
-    <div class="stat-card"><div class="stat-label">累计正确率</div><div class="stat-value">${accuracy}%</div><div class="stat-note">按所有已答次数计算</div></div>`;
+    <div class="stat-card stat-v2"><div class="stat-ic red">${IC.alert}</div><div><div class="stat-label">当前错题</div><div class="stat-value" data-cu="${wrongIds.length}">0</div><div class="stat-note">建议每天先清这一组</div></div></div>
+    <div class="stat-card stat-v2"><div class="stat-ic orange">${IC.flame}</div><div><div class="stat-label">累计错误</div><div class="stat-value" data-cu="${wrongAttempts}">0</div><div class="stat-note">包含重复错题次数</div></div></div>
+    <div class="stat-card stat-v2"><div class="stat-ic green">${IC.target}</div><div><div class="stat-label">累计正确率</div><div class="stat-value" data-cu="${accuracy}" data-suffix="%">0%</div><div class="stat-note">按所有已答次数计算</div></div></div>`;
+  countUpAll(document.getElementById('statsGrid'));
   renderReviewPanel();
   renderCompactReviewControls();
   renderChapters();
+}
+
+/* ===== 主页 V2 helpers ===== */
+const IC = {
+  alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+  flame: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
+  target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+  book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>'
+};
+const DAILY_GOAL = 20;
+function todayKey() { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+function getDaily() { const d = readJson('camsB_daily', { date: todayKey(), count: 0, correct: 0 }); return d && d.date === todayKey() ? d : { date: todayKey(), count: 0, correct: 0 }; }
+function bumpDaily(ok) { const d = getDaily(); d.count++; if (ok) d.correct++; writeJson('camsB_daily', d); }
+function countUpAll(scope) {
+  if (!scope) return;
+  scope.querySelectorAll('[data-cu]').forEach(el => {
+    const target = Number(el.dataset.cu) || 0;
+    const suf = el.dataset.suffix || '';
+    if (!target) { el.textContent = '0' + suf; return; }
+    const t0 = performance.now(), dur = 620;
+    const step = t => {
+      const k = Math.min((t - t0) / dur, 1);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3))) + suf;
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
+}
+function renderHeroRing(ctx) {
+  const el = document.getElementById('heroRing');
+  if (!el) return;
+  const d = getDaily();
+  const done = d.count >= DAILY_GOAL;
+  const pct = Math.min(d.count / DAILY_GOAL, 1);
+  const R = 33, C = 2 * Math.PI * R;
+  el.innerHTML = `
+    <svg class="hr-svg" viewBox="0 0 84 84">
+      <circle class="hr-track" cx="42" cy="42" r="${R}" fill="none" stroke-width="8"/>
+      <circle class="hr-fill${done ? ' hr-done' : ''}" cx="42" cy="42" r="${R}" fill="none" stroke-width="8" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${C.toFixed(1)}" data-off="${(C * (1 - pct)).toFixed(1)}" transform="rotate(-90 42 42)"/>
+      <text class="hr-num" x="42" y="44" text-anchor="middle" data-cu="${d.count}">0</text>
+      <text class="hr-cap" x="42" y="59" text-anchor="middle">${done ? '今日完成' : '今日目标'}</text>
+    </svg>
+    <div class="hr-side">
+      <div class="hr-row"><span class="ic-blue">${IC.book}</span><span>覆盖率</span><b>${Math.round(ctx.attempted / Math.max(ctx.total, 1) * 100)}%</b></div>
+      <div class="hr-row"><span class="ic-green">${IC.check}</span><span>今日正确</span><b data-cu="${d.correct}">0</b></div>
+    </div>`;
+  setTimeout(() => {
+    el.querySelectorAll('.hr-fill').forEach(c => { c.style.strokeDashoffset = c.dataset.off; });
+    countUpAll(el);
+  }, 80);
 }
 
 function renderCompactReviewControls() {
@@ -1069,21 +1615,36 @@ function renderReviewPanel() {
 
 function renderChapters() {
   const grid = document.getElementById('chapterGrid');
+  const stats = getStats();
+  const attemptedIds = new Set(Object.keys(stats).filter(id => ((stats[id].correct || 0) + (stats[id].wrong || 0)) > 0).flatMap(id => [id, Number(id)]));
   grid.innerHTML = '';
   getChapterStats().forEach(ch => {
+    if (!ch.total) return;
+    const doneN = ALL_QUESTIONS.filter(q => q.chapter_id === ch.id && attemptedIds.has(q.id)).length;
+    const pct = Math.round(doneN / ch.total * 100);
+    const full = doneN >= ch.total;
     const card = document.createElement('div');
     card.className = 'chapter-card';
     card.innerHTML = `
-      <h3>${ch.full}</h3>
-      <div class="meta">${ch.single} 单选 · ${ch.multi} 多选</div>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+      <div class="ch-head">
+        <div class="ch-num">${ch.id <= 9 ? String(ch.id).padStart(2, '0') : '新'}</div>
+        <div><h3>${ch.full}</h3><div class="meta">${ch.single} 单选${ch.multi ? ' · ' + ch.multi + ' 多选' : ''}</div></div>
+      </div>
       <div class="badge-row">
         <span class="count">${ch.total} 题</span>
-        ${ch.wrongCount ? `<span class="count red">${ch.wrongCount} 错题</span>` : '<span class="count green">暂无错题</span>'}
+        ${ch.wrongCount ? `<span class="count red">${ch.wrongCount} 错题</span>` : (doneN ? '<span class="count green">无错题</span>' : '')}
         ${ch.attempts ? `<span class="count orange">错误率 ${Math.round(ch.weakRate * 100)}%</span>` : ''}
+      </div>
+      <div class="ch-progress"><i class="${full ? 'full' : ''}" data-w="${pct}"></i></div>
+      <div class="ch-foot">
+        <span>${full ? `<span class="ch-done">${IC.check}本章完成</span>` : `已练 ${doneN}/${ch.total}`}</span>
+        <span class="pct${full ? ' full' : ''}">${pct}%</span>
       </div>`;
     card.onclick = () => startPractice(ch.id);
     grid.appendChild(card);
   });
+  setTimeout(() => grid.querySelectorAll('.ch-progress i').forEach(b => { b.style.width = b.dataset.w + '%'; }), 120);
 }
 
 function setMode(m) {
@@ -1226,6 +1787,63 @@ function vJStreak() {
   for (; i >= 0; i--) { const r = sa[i]; if (!r || !r.ok) break; n++; }
   return n;
 }
+const V3_ICON = {
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>',
+  bulb: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.4 1 2.3h6c0-.9.4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg>',
+  fire: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c.9 3.4-.7 5-2.1 6.5C8.4 10.2 7 11.9 7 14.5A5.4 5.4 0 0 0 12.4 20c3 0 5.6-2.4 5.6-5.5 0-1.7-.7-3.1-1.5-4.3-.3 1-.9 1.9-1.8 2.4.3-2.8-.8-6.6-2.7-8.4z"/></svg>',
+  gauge: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15l3.5-5.5"/><path d="M20.5 15.5a8.5 8.5 0 1 0-17 0"/><circle cx="12" cy="15.5" r="1.6" fill="currentColor" stroke="none"/></svg>',
+  list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3.5 6h.01"/><path d="M3.5 12h.01"/><path d="M3.5 18h.01"/></svg>'
+};
+function tbSetNum(id, v){
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = v;
+  el.classList.remove('num-pop');
+  void el.offsetWidth;
+  el.classList.add('num-pop');
+}
+const JB_ICONS = {
+  ok: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  wrong: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>',
+  skip: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="M12 5l7 7-7 7"/></svg>'
+};
+function jbShow(kind, title, sub, btnLabel){
+  const bar = document.getElementById('judgeBar');
+  if (!bar) return;
+  const cls = kind === 'ok' ? 'jb-correct' : kind === 'wrong' ? 'jb-wrong' : 'jb-skip';
+  bar.className = cls;
+  document.getElementById('jbIcon').innerHTML = JB_ICONS[kind] || '';
+  document.getElementById('jbTitle').textContent = title;
+  document.getElementById('jbSub').textContent = sub;
+  document.getElementById('jbBtn').textContent = btnLabel || '继续';
+  const p = document.getElementById('practice');
+  if (p) p.classList.add('has-jb');
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ bar.classList.add('show'); }); });
+}
+function jbHide(){
+  const bar = document.getElementById('judgeBar');
+  if (bar) bar.classList.remove('show');
+  const p = document.getElementById('practice');
+  if (p) p.classList.remove('has-jb');
+}
+function jbNext(){ jbHide(); nextQ(); }
+function jbAfterJudge(record){
+  const q = practiceList[record.index];
+  if (!q) return;
+  const last = currentIndex >= practiceList.length - 1;
+  const btn = last ? '查看结果' : '继续';
+  if (record.ok) {
+    let n = 1;
+    try { n = vJStreak(); } catch(e) {}
+    const sub = n >= 2 ? `连击 ×${n}，状态在线` : `用时 ${record.elapsedSec} 秒`;
+    jbShow('ok', '回答正确', sub, btn);
+  } else if (record.forceForgot) {
+    jbShow('skip', '已标记记不住', `正确答案 ${q.answer} · 建议稍后再见一次`, btn);
+  } else {
+    jbShow('wrong', '回答错误', `正确答案 ${q.answer}`, btn);
+  }
+}
 function vJEnsureSide() {
   const qc = document.querySelector('#practice .q-container');
   if (!qc) return null;
@@ -1233,10 +1851,10 @@ function vJEnsureSide() {
   if (!s) {
     s = document.createElement('div');
     s.id = 'statSide';
-    s.innerHTML = '<div class="side-h">答题状态</div>'
+    s.innerHTML = '<div class="side-h">' + V3_ICON.gauge + '答题状态</div>'
       + '<div class="stat-big" id="vJAccBig">--</div><div class="stat-cap">全盘正确率</div>'
-      + '<div class="stat-row">连击 <strong id="vJStreakBig">0</strong></div>'
-      + '<div class="stat-row">本轮 <strong id="vJSess">0/0</strong></div>';
+      + '<div class="stat-row">' + V3_ICON.fire + '连击 <strong id="vJStreakBig">0</strong></div>'
+      + '<div class="stat-row">' + V3_ICON.list + '本轮 <strong id="vJSess">0/0</strong></div>';
     qc.appendChild(s);
   }
   return s;
@@ -1256,8 +1874,8 @@ function vJRefresh(pulse) {
     if (pulse) { acc.classList.remove('vJpulse'); void acc.offsetWidth; acc.classList.add('vJpulse'); }
   }
   if (stk) {
-    stk.textContent = `🔥${n}`;
     stk.classList.toggle('hot', n >= 3);
+    tbSetNum('streakNum', n);
   }
   vJEnsureSide();
   const big = document.getElementById('vJAccBig');
@@ -1276,6 +1894,7 @@ function renderQuestion() {
   if (currentIndex >= practiceList.length) { showFinish(); return; }
   savePracticeProgress();
   vJRefresh(false);
+  jbHide();
   answered = false;
   selectedOptions = [];
   questionStartedAt = Date.now();
@@ -1289,8 +1908,8 @@ function renderQuestion() {
   card.onclick = null;
   document.getElementById('progressText').textContent = `${currentIndex + 1} / ${total}`;
   document.getElementById('progressFill').style.width = ((currentIndex + 1) / total * 100) + '%';
-  document.getElementById('scoreBadge').textContent = `正确：${correctCount}`;
-  document.getElementById('wrongBadge').textContent = `错题：${getWrongIds().length}`;
+  tbSetNum('scoreNum', correctCount);
+  tbSetNum('wrongNum', getWrongIds().length);
   const optionsHtml = q.options.map((opt, i) => `<div class="option-item" id="opt_${i}" onclick="selectOpt(${i})">
       <span class="opt-label">${String.fromCharCode(65 + i)}</span><span>${cleanText(opt)}</span>
     </div>`).join('');
@@ -1305,7 +1924,7 @@ function renderQuestion() {
     <div class="options-list">${optionsHtml}</div>
     <div class="pre-answer-actions">
       ${qIsMulti ? '<button class="confirm-btn" id="confirmBtn" onclick="submitMulti()" disabled>确认答案</button>' : ''}
-      <button class="forget-btn" onclick="giveUpQuestion()">我忘了，看答案</button>
+      <div class="forgot-line"><button class="forgot-link" onclick="giveUpQuestion()">想不起来？标记后直接看答案</button></div>
     </div>
     <div id="resultBox"></div>
     <div class="nav-row" id="navRow" style="display:none">
@@ -1378,25 +1997,24 @@ function renderAnswerResult(record) {
   const forgetBtn = document.querySelector('.forget-btn');
   if (forgetBtn) forgetBtn.disabled = true;
   const stats = getStats()[q.id] || {};
-  const expl = q.explanation ? `<div class="explanation"><div class="expl-title">题目解析</div>${q.explanation}</div>` : '';
+  const expl = q.explanation ? `<div class="explanation"><div class="expl-title">${V3_ICON.bulb}题目解析</div>${q.explanation}</div>` : '';
   const avgTime = stats.answerTimeCount ? Math.round((stats.answerTimeTotal || 0) / stats.answerTimeCount) : 0;
-  const settings = getTimeSettings();
-  const timeNote = record.elapsedSec > settings.cap ? `本题用时 ${record.elapsedSec} 秒，熟悉度统计按 ${settings.cap} 秒封顶。` : `本题用时 ${record.elapsedSec} 秒。`;
-  const stageNote = record.timeStage.key === 'fast' ? '熟练作答。' :
-    record.timeStage.key === 'hesitant' ? '有点犹豫，建议后面再见一次。' :
-    record.timeStage.key === 'slow' ? '慢答，会进入复习池。' :
-    record.timeStage.key === 'timeout' ? '时间过长，可能离开页面；会进入复习池，但统计已封顶。' :
-    '时间检测已关闭。';
-  const timeSummaryHtml = settings.enabled
-    ? `<div class="answer-text"><strong>本题累计：</strong>错 ${stats.wrong || 0} 次， 对 ${stats.correct || 0} 次，犹豫 ${stats.hesitant || 0} 次，慢答 ${stats.slow || 0} 次，平均 ${avgTime} 秒</div><div class="answer-text"><strong>熟悉度：</strong>${record.timeStage.label}。${timeNote} ${stageNote}</div>`
-    : `<div class="answer-text"><strong>本题累计：</strong>错 ${stats.wrong || 0} 次， 对 ${stats.correct || 0} 次。时间检测已关闭。</div>`;
+  const histLine = `累计答错 ${stats.wrong || 0} 次 · 答对 ${stats.correct || 0} 次 · 犹豫 ${stats.hesitant || 0} 次 · 慢答 ${stats.slow || 0} 次 · 平均 ${avgTime} 秒`;
+  const extraChip = record.timeStage.key === 'slow' || record.timeStage.key === 'timeout' ? '<span class="rb-chip">已进复习池</span>' : '';
+  const resultIcon = record.ok ? V3_ICON.check : V3_ICON.x;
+  const resultWord = record.ok ? '回答正确' : (record.forceForgot ? '已标记为记不住' : '回答错误');
   document.getElementById('resultBox').innerHTML = `
     <div class="result-box">
-      <div class="result-label ${record.ok ? 'correct' : 'wrong'}">${record.ok ? '回答正确' : (record.forceForgot ? '已标记为记不住' : '回答错误')}</div>
-      <div class="answer-text"><strong>我的选择：</strong>${record.selectedLetters || '未选择'}　<strong>正确答案：</strong>${q.answer}</div>
-      ${timeSummaryHtml}
+      <div class="result-label ${record.ok ? 'correct' : 'wrong'}">${resultIcon}${resultWord}</div>
+      <div class="rb-chips">
+        <span class="rb-chip ${record.ok ? 'chip-ok' : 'chip-bad'}">我的选择 <strong>${record.selectedLetters || '未选择'}</strong></span>
+        <span class="rb-chip">正确答案 <strong>${q.answer}</strong></span>
+        <span class="rb-chip">${record.timeStage.label} · ${record.elapsedSec} 秒</span>
+        ${extraChip}
+      </div>
+      <details class="rb-history"><summary>本题历史数据</summary><div class="rb-hist-body">${histLine}</div></details>
       ${expl}
-      <div class="tap-next-hint" id="masteryNotice">答完后点击题卡空白处，可直接进入下一题。连续快速答对 2 次会自动标记为已掌握；你也可以手动标记。</div>
+      <div class="tap-next-hint" id="masteryNotice">点击题卡空白处进入下一题 · 连续 2 次快速答对自动标记已掌握</div>
       <div class="mastery-row">
         <button class="small-btn" onclick="markForgot('${q.id}')">记不住了</button>
         <button class="small-btn" onclick="setMastery('${q.id}','unmastered')">标记未掌握</button>
@@ -1412,8 +2030,8 @@ function renderAnswerResult(record) {
     nextQ();
   };
   document.getElementById('navRow').style.display = 'flex';
-  document.getElementById('scoreBadge').textContent = `正确：${correctCount}`;
-  document.getElementById('wrongBadge').textContent = `错题：${getWrongIds().length}`;
+  tbSetNum('scoreNum', correctCount);
+  tbSetNum('wrongNum', getWrongIds().length);
   vJRefresh(true);
 }
 
@@ -1434,6 +2052,7 @@ function judgeAnswer(forceForgot=false) {
   const ok = !forceForgot && JSON.stringify(selectedLetters) === JSON.stringify(correctSorted);
   answeredCount++;
   if (ok) correctCount++;
+  try { bumpDaily(ok); } catch (e) {}
   const record = {
     index: currentIndex,
     qid: q.id,
@@ -1448,6 +2067,7 @@ function judgeAnswer(forceForgot=false) {
   sessionAnswers[currentIndex] = record;
   savePracticeProgress();
   renderAnswerResult(record);
+  jbAfterJudge(record);
   return;
   q.options.forEach((_, i) => {
     const letter = String.fromCharCode(65 + i);
@@ -1628,14 +2248,24 @@ function submitSession() {
 
 function showFinish(manualSubmit=false) {
   stopExamTimer(false);
+  jbHide();
   commitSessionAnswers();
   clearPracticeProgress(currentPractice);
   const s = getSessionSummary();
   const suggestion = s.accuracy >= 85 ? '状态不错，接下来优先清理错题本。' : s.accuracy >= 70 ? '建议再刷一轮高频错题和多选专项。' : '建议回到薄弱章节，先按章节复习再模拟。';
   const title = manualSubmit ? '本次练习已提交' : '练习完成';
   document.querySelector('.modal-title').textContent = title;
+  const trophy = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v6a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a3 3 0 0 0 3 4"/><path d="M17 6h3a3 3 0 0 1-3 4"/></svg>';
+  const medalCls = s.accuracy >= 85 ? '' : (s.accuracy >= 60 ? ' fn-silver' : ' fn-bronze');
+  const unansweredNote = s.unanswered > 0 ? `<br>还有 ${s.unanswered} 题未作答，可重新练习补上。` : '';
   document.getElementById('finishBody').innerHTML =
-    `本次完成 <strong>${s.done}</strong> / ${s.total} 题，进度 <strong>${s.progress}%</strong><br>未答 <strong>${s.unanswered}</strong> 题<br>正确 <strong>${s.correct}</strong> 题，正确率 <strong>${s.accuracy}%</strong><br>错题本共 <strong>${getWrongIds().length}</strong> 道<br>${suggestion}`;
+    `<div class="fn-hero"><div class="fn-medal${medalCls}">${trophy}</div></div>`
+    + `<div class="fn-grid">`
+    + `<div class="fn-cell"><div class="fn-num ${s.accuracy >= 85 ? 'good' : ''}">${s.accuracy}<small>%</small></div><div class="fn-cap">正确率</div></div>`
+    + `<div class="fn-cell"><div class="fn-num">${s.done}<small>/${s.total}</small></div><div class="fn-cap">完成题数</div></div>`
+    + `<div class="fn-cell"><div class="fn-num">${getWrongIds().length}</div><div class="fn-cap">错题本</div></div>`
+    + `</div>`
+    + `<div class="fn-note">${suggestion}${unansweredNote}</div>`;
   document.getElementById('finishOverlay').classList.add('show');
 }
 
@@ -1681,7 +2311,7 @@ function startSingleWrong(qid) {
 
 function startExamTimer() {
   examStartedAt = Date.now();
-  document.getElementById('timerBadge').style.display = 'block';
+  document.getElementById('timerBadge').style.display = 'inline-flex';
   examTimer = setInterval(() => {
     const sec = Math.floor((Date.now() - examStartedAt) / 1000);
     const mm = String(Math.floor(sec / 60)).padStart(2, '0');
@@ -1721,7 +2351,7 @@ window.__LIAN_FULL__ = {"1": "信号是‘避税天堂＋查不到真实业务�
     }catch(e){}
     return null;
   }
-  var PH='<div class="side-h">◆ 串联知识点</div><div class="side-ph">答完这题，这里会把相关考点串一串。</div>';
+  var PH='<div class="side-h">'+IC.link+'串联知识点</div><div class="side-ph">答完这题，这里会把相关考点串一串。</div>';
   function ensureSide(){
     var qc=document.querySelector('#practice .q-container'); if(!qc) return null;
     var s=document.getElementById('lianSide');
@@ -1732,15 +2362,15 @@ window.__LIAN_FULL__ = {"1": "信号是‘避税天堂＋查不到真实业务�
     var dash=document.querySelector('#home .dashboard'); if(!dash) return;
     if(document.getElementById('lianIntro')) return;
     var m=document.createElement('div'); m.id='lianIntro';
-    m.innerHTML='<div class="li-t">◆ 串联知识点</div>'+
-      '<div class="li-d">答完每道题，除了对错和解析，还会按题号精准弹出一条串联——哪些题是一个路子、哪儿容易混。电脑上显示在题目左侧，手机上在答案下面。<br><span style="color:#0a7d5a">学习进度自动保存在本机浏览器，换浏览器需重新开始。</span></div>';
+    m.innerHTML='<div class="li-t">'+IC.link+'串联知识点</div>'+
+      '<div class="li-d">答完一题，自动弹出一条按题号匹配的串联——哪些题是一个路子、哪儿容易混。</div>';
     dash.insertBefore(m, dash.firstChild);
   }
   function wide(){ try{return window.matchMedia('(min-width:1200px)').matches;}catch(e){return false;} }
   function esc(s){ return String(s||''); }
   function fillInline(rb,t){
     var box=document.createElement('div'); box.className='lian-box';
-    box.innerHTML='<div class="lian-h">◆ 串联知识点</div><div class="lian-c">'+esc(t)+'</div>';
+    box.innerHTML='<div class="lian-h">'+(IC.link||'')+'串联知识点</div><div class="lian-c">'+esc(t)+'</div>';
     var ans=rb.querySelectorAll('.answer-text');
     if(ans&&ans.length){ans[0].parentNode.insertBefore(box,ans[0].nextSibling);}else{rb.insertBefore(box,rb.firstChild);}
     try{box.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}
@@ -1757,8 +2387,8 @@ window.__LIAN_FULL__ = {"1": "信号是‘避税天堂＋查不到真实业务�
       var t=id && window.__LIAN_FULL__[id];
       if(s) s.setAttribute('data-qid', id||'');
       if(wide() && s){
-        s.innerHTML = t ? '<div class="side-h">◆ 串联知识点</div><div class="side-c">'+esc(t)+'</div>'
-                        : '<div class="side-h">◆ 串联知识点</div><div class="side-ph">这题暂无串联。</div>';
+        s.innerHTML = t ? '<div class="side-h">'+IC.link+'串联知识点</div><div class="side-c">'+esc(t)+'</div>'
+                        : '<div class="side-h">'+IC.link+'串联知识点</div><div class="side-ph">这题暂无串联。</div>';
       } else if(t){ fillInline(rb,t); }
     } else if(s){
       if(id && s.getAttribute('data-qid')!==id){ s.setAttribute('data-qid',id); s.innerHTML=PH; }
@@ -1768,6 +2398,37 @@ window.__LIAN_FULL__ = {"1": "信号是‘避税天堂＋查不到真实业务�
     ensureSide(); ensureIntro();
     new MutationObserver(tick).observe(document.body,{childList:true,subtree:true});
   });
+})();
+</script>
+<script>
+/* V4 · 串联线节点布点：沿路径几何取点，节点永远在线上 */
+(function(){
+  var svg=document.querySelector('.thread-deco'); if(!svg) return;
+  var path=svg.querySelector('.td-path'), g=svg.querySelector('.td-nodes');
+  if(!path||!g) return;
+  var fr=[.04,.17,.30,.43,.56,.69,.82,.93], live={2:1,5:1};
+  try{
+    var L=path.getTotalLength();
+    for(var i=0;i<fr.length;i++){
+      var p=path.getPointAtLength(L*fr[i]);
+      var d1=(1.0+i*.13).toFixed(2)+'s';
+      if(live[i]){
+        var halo=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        halo.setAttribute('cx',p.x); halo.setAttribute('cy',p.y); halo.setAttribute('r',7.5);
+        halo.setAttribute('class','td-node td-halo'); halo.style.animationDelay=d1;
+        g.appendChild(halo);
+        var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        c.setAttribute('cx',p.x); c.setAttribute('cy',p.y); c.setAttribute('r',4.2);
+        c.setAttribute('class','td-node td-seal td-live'); c.style.animationDelay=d1;
+        g.appendChild(c);
+      }else{
+        var c2=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        c2.setAttribute('cx',p.x); c2.setAttribute('cy',p.y); c2.setAttribute('r',3.4);
+        c2.setAttribute('class','td-node td-ink'); c2.style.animationDelay=(0.55+i*.13).toFixed(2)+'s';
+        g.appendChild(c2);
+      }
+    }
+  }catch(e){}
 })();
 </script></body>
 </html>
